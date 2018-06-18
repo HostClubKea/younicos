@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<!--<head th:replace="common/header :: common-header"/>-->
+<body>
+    <div class="container">
+        <div class="row ">
+            <div class="main-center ">
+                <div>
+                    Current generator: <b><span th:text="${generator}"/></b>
+                </div>
+                <div>
+                    Current reading: <b><span id="current-frequency"></span></b>
+                </div>
+                <div>
+                    <h3>Change frequency generator</h3>
+                    <a type="submit" class="btn btn-info btn-lg btn-block" th:href="@{/normal}">Normal</a>
+                    <a type="submit" class="btn btn-info btn-lg btn-block" th:href="@{/high}">High</a>
+                    <a type="submit" class="btn btn-info btn-lg btn-block" th:href="@{/low}">Low</a>
+                    <a type="submit" class="btn btn-info btn-lg btn-block" th:href="@{/invalid}">Invalid</a>
+                    <a type="submit" class="btn btn-info btn-lg btn-block" th:href="@{/none}">None</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!--<div th:replace="common/header :: body-bottom-scripts"/>-->
+    <script type="application/javascript">
+
+        function readCurrentFrequency(){
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "/frequency", true);
+            xhttp.setRequestHeader("Content-type", "application/json");
+            xhttp.send();
+
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("current-frequency").innerText = xhttp.responseText? xhttp.responseText: "none";
+                } else {
+                    document.getElementById("current-frequency").innerText = "none";
+                }
+            };
+
+
+        }
+
+        setInterval(readCurrentFrequency, 100);
+
+    </script>
+    <style>
+        .btn{
+            display: inline-block;
+            background-color: greenyellow;
+            margin: 5px;
+            padding: 5px;
+            border-radius: 2px;
+            color: black;
+            text-decoration: none;
+        }
+
+        .btn:hover{
+            background-color: chartreuse;
+            font-weight: bold;
+        }
+    </style>
+</body>
+
+</html>
